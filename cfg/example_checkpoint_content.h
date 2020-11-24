@@ -14,7 +14,6 @@
 
 __attribute__((always_inline))
 static inline void CHECKPOINT_SETUP_CONTENT(void) {
-  //setup_mpatch();
 }
 
 /*
@@ -25,7 +24,6 @@ static inline void CHECKPOINT_CONTENT(void) {
   checkpoint_data();
   checkpoint_bss();
   checkpoint_stack();
-  //checkpoint_mpatch();
   checkpoint_registers(); // MUST BE LAST
 }
 
@@ -37,7 +35,6 @@ static inline void CHECKPOINT_RESTORE_CONTENT(void) {
   restore_data();
   restore_bss();
   restore_stack();
-  //restore_mpatch();
   restore_registers(); // MUST BE LAST
 }
 
@@ -46,7 +43,6 @@ static inline void CHECKPOINT_RESTORE_CONTENT(void) {
  */
 __attribute__((always_inline))
 static inline void POST_CHECKPOINT_CONTENT(void) {
-  //post_checkpoint_mpatch();
 }
 
 /*
