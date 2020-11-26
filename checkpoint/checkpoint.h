@@ -17,4 +17,7 @@ bool checkpoint_restore_available(void);
 void checkpoint_restore_invalidate(void);
 void checkpoint_restore_set_availible(void);
 
+/* Helper to perform all initializations */
+void checkpoint_initialize(void);
+
 #endif // MICROPY_INCLUDED_LIB_CHECKPOINT_CHECKPOINT_H_

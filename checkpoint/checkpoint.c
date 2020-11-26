@@ -119,3 +119,26 @@ int checkpoint_onetime_setup(void) {
     return 0;
 }
 
+void checkpoint_initialize(void) {
+    #ifdef __CHECKPOINT__
+    if (!checkpoint_restore_available()) {
+        // First boot
+        // Init the .bss and .data (no-restore parts already init in startup)
+
+        // Init the remaining .data
+        startup_clear_data();
+
+        // Zero the remaining .bss
+        startup_clear_bss();
+    }
+
+    checkpoint_setup();
+
+    checkpoint_restore();
+
+    checkpoint_onetime_setup();
+
+    checkpoint();
+    checkpoint_restore_set_availible();
+    #endif
+}
