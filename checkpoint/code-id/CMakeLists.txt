@@ -1,14 +1,16 @@
-string(RANDOM
-    LENGTH 8
-    ALPHABET "0123456789ABCDEF"
-    COMPILE_TIME_CODE_ID
-    )
+if (CMAKE_CODE_ID)
+    string(RANDOM
+        LENGTH 8
+        ALPHABET "0123456789ABCDEF"
+        COMPILE_TIME_CODE_ID
+        )
 
-add_compile_definitions(
-    "COMPILE_TIME_CODE_ID=0x${COMPILE_TIME_CODE_ID}"
-    )
+    add_compile_definitions(
+        "COMPILE_TIME_CODE_ID=0x${COMPILE_TIME_CODE_ID}"
+        )
 
-message("COMPILE TIME CODE ID = 0x${COMPILE_TIME_CODE_ID}")
+    message("COMPILE TIME CODE ID = 0x${COMPILE_TIME_CODE_ID}")
+endif()
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
