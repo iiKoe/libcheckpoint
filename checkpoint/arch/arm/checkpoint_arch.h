@@ -9,4 +9,6 @@ typedef uint8_t lclock_t;
 
 typedef uint32_t registers_t;
 
+#define LIBCP_ASM __asm__ volatile
+
 #endif /* CHECKPOINT_ARCH_H_ */

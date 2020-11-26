@@ -15,38 +15,19 @@ extern registers_t registers_checkpoint_nvm[2][CHECKPOINT_N_REGISTERS];
  */
 
 extern volatile registers_t registers[CHECKPOINT_N_REGISTERS];
-extern volatile registers_t checkpoint_svc_restore;
-#define checkpoint_restored() checkpoint_svc_restore
+extern volatile registers_t *registers_checkpoint_ptr;
+extern volatile registers_t checkpoint_restored_flag;
 
-// TODO Check for the correct placement of DSB, prob. needed for cache flush?
-#define CP_SAVE_REGISTERS()     \
-  do {                          \
-    checkpoint_svc_restore = 0; \
-    __asm__ volatile("SVC 42"); \
-    /*__DSB();*/                \
-    /*__ISB();*/                \
-  } while (0)
+__attribute__((naked)) void checkpoint_registers_asm(void);
+__attribute__((naked)) void restore_registers_asm(void);
 
-#define CP_RESTORE_REGISTERS()  \
-  do {                          \
-    checkpoint_svc_restore = 1; \
-    __asm__ volatile("SVC 43"); \
-  } while (0)
+#define checkpoint_restored() checkpoint_restored_flag
 
 __attribute__((always_inline))
-static inline size_t checkpoint_registers(void) {
-  CP_SAVE_REGISTERS();
-
-  if (checkpoint_restored() == 0) {
-    // Store the registers
-    char *b_registers = (char *)registers;
-    char *cp = (char *)registers_checkpoint_nvm[checkpoint_get_active_idx()];
-    for (int i = 0; i < sizeof(registers); i++) {
-      cp[i] = b_registers[i];
-    }
-  }
-
-  return sizeof(registers);
+static inline void checkpoint_registers(void) {
+    checkpoint_restored_flag = 0;
+    registers_checkpoint_ptr = registers_checkpoint_nvm[checkpoint_get_active_idx()];
+    checkpoint_registers_asm();
 }
 
 void restore_registers(void);
