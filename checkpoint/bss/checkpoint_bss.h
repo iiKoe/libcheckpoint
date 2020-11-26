@@ -5,5 +5,6 @@
 
 size_t checkpoint_bss(void);
 size_t restore_bss(void);
+void startup_clear_bss(void);
 
 #endif /* CHECKPOINT_BSS_H_ */

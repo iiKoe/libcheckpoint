@@ -52,3 +52,14 @@ size_t restore_bss(void) {
   restore_mem(bss_ptr, cp, size);
   return size;
 }
+
+/*
+ * Used during the first boot
+ */
+void startup_clear_bss(void) {
+    char *bss = (char *)&_ebss_norestore;
+    uint32_t size = (char *)&_ebss - bss;
+    for (uint32_t i=0; i<size; i++) {
+        bss[i] = 0;
+    }
+}

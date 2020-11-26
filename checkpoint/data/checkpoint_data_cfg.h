@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+extern uint32_t _sdata;
+extern uint32_t _init_data;
+
 /* .data section to checkpoint the linkerscript */
 extern uint32_t _edata_norestore;
 extern uint32_t _edata;

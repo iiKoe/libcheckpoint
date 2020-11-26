@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+extern uint32_t _sbss;
+
 /* .bss section to checkpoint the linkerscript */
 extern uint32_t _ebss_norestore;
 extern uint32_t _ebss;

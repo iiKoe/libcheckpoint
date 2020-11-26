@@ -52,3 +52,19 @@ size_t restore_data(void) {
   restore_mem(data_ptr, cp, size);
   return size;
 }
+
+/*
+ * Used during the first boot
+ */
+void startup_clear_data(void) {
+    char *data = (char *)&_edata_norestore;
+
+    char *data_init = (char *)&_init_data;
+    uint32_t start_offset = data - (char *)&_sdata;
+    data_init = &data_init[start_offset];
+
+    uint32_t size = (char *)&_edata - data;
+    for (uint32_t i=0; i<size; i++) {
+        data[i] = data_init[i];
+    }
+}
