@@ -15,6 +15,14 @@ void restore_registers(void) {
     restore_registers_asm();
 }
 
+/*
+ * Register array layout (every register is 4 bytes)
+ * idx: | 0                                                                            15(60)| 16(64)
+        +------------------------------------------------------------------------------------+
+   reg: | r0 | r1 | r2 | r3 | r4 | r5 | r6 | r7 | r8 | r9 | r10 | r11 | r12 | sp | lr | xpsr |
+        +------------------------------------------------------------------------------------+
+*/
+
 __attribute__((naked))
 void checkpoint_registers_asm(void) {
     LIBCP_ASM("cpsid i"); // disable interrupts
@@ -37,13 +45,14 @@ void checkpoint_registers_asm(void) {
 
     LIBCP_ASM("mov r0, sp");
     LIBCP_ASM("mov r1, lr");
-    LIBCP_ASM("stmia r7!, {r0-r1}");
+    LIBCP_ASM("mrs r2, xpsr");
+    LIBCP_ASM("stmia r7!, {r0-r2}");
 
     /* Restore the low registers registers */
-    LIBCP_ASM("sub r7, #60"); // point to r0-r4
+    LIBCP_ASM("sub r7, #64"); // point to r0-r4
 
     LIBCP_ASM("ldmia r7!, {r0-r4}");
-    LIBCP_ASM("ldr r7, [r7, #8]");
+    LIBCP_ASM("ldr r7, [r7, #8]"); // load r7
 
     LIBCP_ASM("cpsie i"); // enable interrupts
     LIBCP_ASM("bx lr");
@@ -59,7 +68,7 @@ void restore_registers_asm(void) {
 
     LIBCP_ASM("add r7, #32"); // point to r8-r12, sp, lr
 
-    LIBCP_ASM("ldmia r7, {r0-r6}"); // load r8-r12, sp, lr into r0-r6
+    LIBCP_ASM("ldmia r7!, {r0-r6}"); // load r8-r12, sp, lr into r0-r6
     LIBCP_ASM("mov r8, r0");
     LIBCP_ASM("mov r9, r1");
     LIBCP_ASM("mov r10, r2");
@@ -69,7 +78,10 @@ void restore_registers_asm(void) {
     LIBCP_ASM("mov sp, r5");
     LIBCP_ASM("mov lr, r6");
 
-    LIBCP_ASM("sub r7, #32"); // point to r0-r7
+    LIBCP_ASM("ldr r0, [r7]"); // load psr into r0
+    LIBCP_ASM("msr xpsr, r0");
+
+    LIBCP_ASM("sub r7, #60"); // point to r0-r7
 
     LIBCP_ASM("ldmia r7, {r0-r7}"); // load r0-r7 into r0-r7
 
