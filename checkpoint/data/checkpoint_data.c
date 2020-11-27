@@ -35,22 +35,20 @@ static inline char *data_get_restore_checkpoint(void) {
 /*
  * .data checkpoint and restore
  */
-size_t checkpoint_data(void) {
+void checkpoint_data(void) {
   char* cp = data_get_active_checkpoint();
   char* data_ptr = (char*)checkpoint_data_start;
   size_t size = data_size();
 
   checkpoint_mem(cp, data_ptr, size);
-  return size;
 }
 
-size_t restore_data(void) {
+void restore_data(void) {
   char* cp = data_get_restore_checkpoint();
   char* data_ptr = (char*)checkpoint_data_start;
   size_t size = data_size();
 
   restore_mem(data_ptr, cp, size);
-  return size;
 }
 
 /*

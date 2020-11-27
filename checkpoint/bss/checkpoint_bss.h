@@ -3,8 +3,8 @@
 
 #include "checkpoint_bss_cfg.h"
 
-size_t checkpoint_bss(void);
-size_t restore_bss(void);
+void checkpoint_bss(void);
+void restore_bss(void);
 void startup_clear_bss(void);
 
 #endif /* CHECKPOINT_BSS_H_ */

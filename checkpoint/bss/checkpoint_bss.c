@@ -35,22 +35,20 @@ static inline char *bss_get_restore_checkpoint(void) {
 /*
  * .bss checkpoint and restore
  */
-size_t checkpoint_bss(void) {
+void checkpoint_bss(void) {
   char* cp = bss_get_active_checkpoint();
   char* bss_ptr = (char*)checkpoint_bss_start;
   size_t size = bss_size();
 
   checkpoint_mem(cp, bss_ptr, size);
-  return size;
 }
 
-size_t restore_bss(void) {
+void restore_bss(void) {
   char* cp = bss_get_restore_checkpoint();
   char* bss_ptr = (char*)checkpoint_bss_start;
   size_t size = bss_size();
 
   restore_mem(bss_ptr, cp, size);
-  return size;
 }
 
 /*
