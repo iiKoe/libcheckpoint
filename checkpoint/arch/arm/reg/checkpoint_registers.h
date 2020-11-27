@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "checkpoint_arch.h"
 #include "checkpoint_selector.h"
+#include "barrier.h"
 
 #define CHECKPOINT_N_REGISTERS 17
 
@@ -24,8 +25,13 @@ __attribute__((naked)) void restore_registers_asm(void);
 #define checkpoint_restored() checkpoint_restored_flag
 
 __attribute__((always_inline))
+static inline void checkpoint_registers_prepare(void) {
+
+}
+
+__attribute__((always_inline))
 static inline void checkpoint_registers(void) {
-    checkpoint_restored_flag = 0;
+    //checkpoint_restored_flag = 0;
     registers_checkpoint_ptr = registers_checkpoint_nvm[checkpoint_get_active_idx()];
     checkpoint_registers_asm();
 }
