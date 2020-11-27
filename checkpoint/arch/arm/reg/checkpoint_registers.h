@@ -31,7 +31,6 @@ static inline void checkpoint_registers_prepare(void) {
 
 __attribute__((always_inline))
 static inline void checkpoint_registers(void) {
-    //checkpoint_restored_flag = 0;
     registers_checkpoint_ptr = registers_checkpoint_nvm[checkpoint_get_active_idx()];
     checkpoint_registers_asm();
 }

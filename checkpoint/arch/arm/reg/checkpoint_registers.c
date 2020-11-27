@@ -10,7 +10,6 @@ CHECKPOINT_EXCLUDE_BSS volatile registers_t *registers_checkpoint_ptr;
 CHECKPOINT_EXCLUDE_BSS volatile registers_t checkpoint_restored_flag;
 
 void restore_registers(void) {
-    //checkpoint_restored_flag = 1;
     registers_checkpoint_ptr = registers_checkpoint_nvm[checkpoint_get_restore_idx()];
     restore_registers_asm();
 }
