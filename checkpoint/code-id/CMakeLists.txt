@@ -5,7 +5,8 @@ if (CMAKE_CODE_ID)
         COMPILE_TIME_CODE_ID
         )
 
-    add_compile_definitions(
+    target_compile_definitions(${PROJECT_NAME}
+        PUBLIC
         "COMPILE_TIME_CODE_ID=0x${COMPILE_TIME_CODE_ID}"
         )
 
