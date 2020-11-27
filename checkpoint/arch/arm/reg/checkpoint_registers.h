@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include "checkpoint_arch.h"
 #include "checkpoint_selector.h"
-#include "barrier.h"
 
 #define CHECKPOINT_N_REGISTERS 17
 
