@@ -28,7 +28,7 @@ void checkpoint_registers_asm(void) {
 
     LIBCP_ASM("push {r6, r7}");
 
-    // Set the restored flag to checkpoint
+    // Clear the restored flag (indicate that this is a checkpoint)
     LIBCP_ASM("mov r6, #0");
     LIBCP_ASM("ldr r7, =checkpoint_restored_flag");
     LIBCP_ASM("str r6, [r7]");
@@ -54,7 +54,7 @@ void checkpoint_registers_asm(void) {
     LIBCP_ASM("mrs r2, xpsr");
     LIBCP_ASM("stmia r7!, {r0-r2}");
 
-    /* Restore the low registers registers */
+    // Restore the low registers registers
     LIBCP_ASM("sub r7, #64"); // point to r0-r4
 
     LIBCP_ASM("ldmia r7!, {r0-r6}"); // restore r0-r6
@@ -69,7 +69,7 @@ void restore_registers_asm(void) {
     // We don't care about the current registers here, we will overwrite them
     LIBCP_ASM("cpsid i"); // disable interrupts
 
-    // Set the restored flag to checkpoint
+    // Set the restored flag (indicate that this is a restore)
     LIBCP_ASM("mov r6, #1");
     LIBCP_ASM("ldr r7, =checkpoint_restored_flag");
     LIBCP_ASM("str r6, [r7]");
