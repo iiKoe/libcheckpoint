@@ -42,7 +42,7 @@ static inline char *stack_get_restore_checkpoint(void) {
 /*
  * .stack checkpoint and restore
  */
-size_t checkpoint_stack(void) {
+void checkpoint_stack(void) {
   struct stack_cp *cp = (struct stack_cp *)stack_get_active_checkpoint();
 
   char* stack_ptr = (char *)stackpointer_get();
@@ -51,15 +51,13 @@ size_t checkpoint_stack(void) {
   cp->stack_pointer = stack_ptr;
 
   checkpoint_mem(cp->data, stack_ptr, size);
-  return size;
 }
 
-size_t restore_stack(void) {
+void restore_stack(void) {
   struct stack_cp *cp = (struct stack_cp *)stack_get_restore_checkpoint();
 
   char* stack_ptr = cp->stack_pointer;
   size_t size = stack_size(stack_ptr);
 
   restore_mem(stack_ptr, cp->data, size);
-  return size;
 }
